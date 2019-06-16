@@ -49,3 +49,5 @@ docker-compose up -d -f docker-compose.dev.yml
 # Up and build project
 docker-compose up -d
 ```
+
+Open app in browser on [localhost:4200](http://localhost:4200)
