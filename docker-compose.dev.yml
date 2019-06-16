@@ -1,0 +1,38 @@
+version: "3"
+services:
+  web_app:
+    image: node
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+    networks:
+      - frontend
+    depends_on:
+      - rest_api
+    ports:
+      - "4200:4200"
+    command: npm start
+  rest_api:
+    image: node:10
+    working_dir: /app
+    volumes:
+      - ./backend:/app
+    networks:
+      - frontend
+      - backend
+    depends_on:
+      - db
+    ports:
+      - "5000:5000"
+    command: yarn dev
+  db:
+    image: mongo:4
+    volumes:
+      - transaction-data:/data/db
+    networks:
+      - backend
+networks:
+  frontend:
+  backend:
+volumes:
+  transaction-data:

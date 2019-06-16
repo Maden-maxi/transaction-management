@@ -1,0 +1,99 @@
+<div class="mat-elevation-z8">
+  <div class="form">
+    <div class="actions">
+        <div *ngIf="!file">
+            <button (click)="fileInput.click()" type="button" color="accent" mat-raised-button>Choose CSV</button>
+            <input type="file" name="file" id="file" hidden #fileInput (change)="chooseCSV($event)" accept=".csv">
+        </div>
+    
+        <div class="picked-file" *ngIf="file">
+          <button type="button" mat-raised-button color="warn" (click)="file = null"><span>{{file.name}}</span>  <mat-icon>close</mat-icon></button>
+          <button class="ml-2" type="button" mat-raised-button color="primary" (click)="uploadCSV()">Upload <mat-icon>publish</mat-icon></button>
+        </div>
+
+        <div *ngIf="selectedIds.length">
+          <button class="ml-2" (click)="removeTransaction(selectedIds)" type="button" mat-raised-button color="warn">Remove Selected <mat-icon>delete_forever</mat-icon></button>
+        </div>
+        <div>
+            <button class="ml-2" (click)="addRandomTransaction()" type="button" mat-raised-button color="primary">Add random transaction <mat-icon>note_add</mat-icon></button>
+        </div>
+    </div>
+    
+    <div *ngIf=dataSource?.data>
+      Avarage: {{dataSource?.avarageAmount}}
+      <br>
+      Total: {{dataSource?.totalAmount}}
+
+    </div>
+    
+  </div>
+  <table mat-table class="full-width-table" matSort aria-label="Elements">
+
+    <!-- Checkbox Column -->
+  <ng-container matColumnDef="select">
+      <th mat-header-cell *matHeaderCellDef>
+        <mat-checkbox (change)="$event ? masterToggle() : null"
+                      [checked]="selection.hasValue() && isAllSelected()"
+                      [indeterminate]="selection.hasValue() && !isAllSelected()"
+                      >
+        </mat-checkbox>
+      </th>
+      <td mat-cell *matCellDef="let row">
+        <mat-checkbox (click)="$event.stopPropagation()"
+                      (change)="$event ? selection.toggle(row) : null"
+                      [checked]="selection.isSelected(row)"
+                      >
+        </mat-checkbox>
+      </td>
+    </ng-container>
+    
+    <!-- Id Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>
+      <td mat-cell *matCellDef="let row">{{row.id}}</td>
+    </ng-container>
+
+    <!-- Card Holder Hash Column -->
+    <ng-container matColumnDef="cardHolderHash">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Card Holder Hash</th>
+      <td mat-cell *matCellDef="let row">{{row.cardHolderHash}}</td>
+    </ng-container>
+
+    <!-- Datetime Column -->
+    <ng-container matColumnDef="datetime">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Datetime</th>
+      <td mat-cell *matCellDef="let row">{{row.datetime | date: 'medium'}}</td>
+    </ng-container>
+
+    <!-- Amount Column -->
+    <ng-container matColumnDef="amount">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Amount</th>
+      <td mat-cell *matCellDef="let row">{{row.amount}}</td>
+    </ng-container>
+
+    <!-- Actions Column -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let row">
+        <div class="table-action">
+          <button class="ml-2" (click)="removeTransaction(row.id)" mat-mini-fab color="warn" aria-label="Delete transaction">
+            <mat-icon>delete_forever</mat-icon>
+          </button>
+          <button class="ml-2" (click)="updateTransaction(row)" mat-mini-fab color="primary" aria-label="Navigate to details">
+            <mat-icon>mode_edit</mat-icon>
+          </button>
+        </div>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator #paginator
+      [length]="dataSource?.data?.length"
+      [pageIndex]="0"
+      [pageSize]="10"
+      [pageSizeOptions]="[10, 25, 50, 100]">
+  </mat-paginator>
+</div>

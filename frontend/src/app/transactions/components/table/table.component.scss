@@ -1,0 +1,36 @@
+.full-width-table {
+  width: 100%;
+  .mat-row {
+    &:nth-child(odd) {
+      background: #eee;
+    }
+    &:hover {
+      background: #ddd
+    }
+  } 
+}
+.table-action {
+  display: flex;
+  justify-content: flex-end;
+  a {
+    margin-left: 10px;
+  }
+}
+
+.picked-file {
+  display: flex;
+}
+.form {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px;
+}
+
+.actions {
+  display: flex;
+}
+
+.ml-2 {
+  margin-left: 24px;
+}

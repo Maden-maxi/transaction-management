@@ -1,0 +1,30 @@
+version: "3"
+services:
+  web_app:
+    build: ./frontend
+    networks:
+      - frontend
+    depends_on:
+      - rest_api
+    ports:
+      - "4200:4200"
+  rest_api:
+    build: ./backend
+    networks:
+      - frontend
+      - backend
+    depends_on:
+      - db
+    ports:
+      - "5000:5000"
+  db:
+    image: mongo:4
+    volumes:
+      - transaction-data:/data/db
+    networks:
+      - backend
+networks:
+  frontend:
+  backend:
+volumes:
+  transaction-data:
