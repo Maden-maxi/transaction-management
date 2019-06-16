@@ -8,7 +8,7 @@ WORKDIR /app
 # where available (npm@5+)
 COPY package*.json ./
 
-RUN npm install
+RUN yarn install
 # If you are building your code for production
 # RUN npm install --only=production
 
@@ -16,4 +16,4 @@ RUN npm install
 COPY . ./
 
 EXPOSE 4200
-CMD [ "npm", "start" ]
+CMD [ "yarn", "start" ]
